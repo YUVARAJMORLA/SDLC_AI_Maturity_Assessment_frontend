@@ -17,7 +17,10 @@ export function AuthProvider({ children }) {
       window.fetch = async function (url, options = {}) {
         let targetUrl = url;
         if (typeof url === 'string' && url.startsWith('/api/')) {
-          const apiBase = process.env.NEXT_PUBLIC_API_URL || '';
+          let apiBase = process.env.NEXT_PUBLIC_API_URL || '';
+          if (apiBase.endsWith('/')) {
+            apiBase = apiBase.slice(0, -1);
+          }
           targetUrl = `${apiBase}${url}`;
         }
         const token = sessionStorage.getItem('token');
